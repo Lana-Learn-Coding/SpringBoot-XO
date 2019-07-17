@@ -3,11 +3,9 @@ package lana.sockserver.user;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 
@@ -33,8 +31,8 @@ public class UserServiceImpl implements UserService {
             SecretKeyFactory factory = SecretKeyFactory.getInstance(PBKDF2Hash);
             return factory.generateSecret(spec).getEncoded();
         } catch (GeneralSecurityException e) {
-            e.printStackTrace();
+            // this will never happen
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }
