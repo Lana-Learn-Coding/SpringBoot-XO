@@ -1,4 +1,4 @@
-package lana.sockserver.user;
+package lana.sockserver.user.model;
 
 
 import lombok.Data;
@@ -18,18 +18,11 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Size(min = 6, max = 20)
-    @NotBlank
     private String name;
 
-    @Email
-    @NotBlank
     private String email;
 
-    @Size(min = 6,max = 20)
-    @NotBlank
     private String password;
 
-    @NotBlank
     private String salt;
 }
