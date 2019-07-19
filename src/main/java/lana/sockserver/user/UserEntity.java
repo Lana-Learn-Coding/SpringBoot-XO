@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Size(min = 6, max = 20)
     @NotBlank
@@ -30,5 +30,6 @@ public class UserEntity {
     @NotBlank
     private String password;
 
-    public String salt;
+    @NotBlank
+    private String salt;
 }

@@ -13,6 +13,7 @@ import java.util.Base64;
 @Service("UserService")
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
+
     @Autowired
     public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
@@ -20,10 +21,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity save(UserEntity user) {
-        user.setSalt(this.generateSalt());
-        user.setPassword(this.generateHash(user.getPassword(), user.getSalt()));
-        UserEntity createdUser = userRepo.save(user);
-        return createdUser;
+        if (!userExist(user)) {
+            user.setSalt(this.generateSalt());
+            user.setPassword(this.generateHash(user.getPassword(), user.getSalt()));
+        }
+        // now is put but we need use patch here in case
+        // the user is already exist
+        return userRepo.save(user);
+    }
+
+    @Override
+    public boolean authorize(UserEntity user) {
+        if (userExist(user)) {
+            // already check user exist above so this should never null
+            // in case something wrong happened return false.
+            UserEntity userInfo = userRepo.findById(user.getId()).orElse(null);
+            if (userInfo != null) {
+                String salt = userInfo.getSalt();
+                String validHash = userInfo.getPassword();
+                String hash = generateHash(user.getPassword(), salt);
+                if (hash.equals(validHash)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean userExist(UserEntity user) {
+        Integer userId = user.getId();
+        return (userId != null) && (userRepo.existsById(userId));
     }
 
 
