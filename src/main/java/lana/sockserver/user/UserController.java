@@ -28,22 +28,31 @@ public class UserController {
     @GetMapping("/login")
     public String getLogin(Model model) {
         model.addAttribute("user", new UserForm());
-        return "signIn";
+        return "login";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("user") UserForm user, BindingResult bindingResult) {
+    public String login(@ModelAttribute("user") UserForm user) {
+        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+        if (userService.authorize(userEntity)) {
+            return "ok";
+        }
+        return "login";
+    }
+
+    @GetMapping("/sign-up")
+    public String getSignUp(Model model) {
+        model.addAttribute("user", new UserForm());
+        return "signUp";
+    }
+
+    @PostMapping("/sign-up")
+    public String signUp(@Valid @ModelAttribute("user") UserForm user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signIn";
+            return "signUp";
         }
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
-        System.out.println(userEntity);
-        return "redirect:/ok";
+        userService.save(userEntity);
+        return "redirect:/login";
     }
-
-    @GetMapping
-    public String ok() {
-        return "ok";
-    }
-
 }
