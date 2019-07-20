@@ -52,7 +52,11 @@ public class UserController {
             return "signUp";
         }
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
-        userService.save(userEntity);
+        try {
+            userService.create(userEntity);
+        } catch (Exception e) {
+            return "signUp";
+        }
         return "redirect:/login";
     }
 }
