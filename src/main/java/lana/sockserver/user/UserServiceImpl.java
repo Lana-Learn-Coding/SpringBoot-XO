@@ -1,5 +1,7 @@
 package lana.sockserver.user;
 
+import lana.sockserver.user.exception.UserExistException;
+import lana.sockserver.user.exception.UserNotExistException;
 import lana.sockserver.user.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,33 +23,61 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity save(UserEntity user) {
-        if (!userExist(user)) {
-            user.setSalt(this.generateSalt());
-            user.setPassword(this.generateHash(user.getPassword(), user.getSalt()));
+    public UserEntity get(UserEntity user) throws UserNotExistException {
+        String username = user.getName();
+        Integer userId = user.getId();
+        // if both username and id exist then check if those match with the info in database
+        // else try to get the user based on username or id.
+        if (userId != null && username != null) {
+            UserEntity userEntity = userRepo.findById(userId).orElseThrow(UserNotExistException::new);
+            if (!userEntity.getName().equals(username)) throw new UserNotExistException();
+            return userEntity;
+        } else if (userId != null) {
+            return userRepo.findById(userId).orElseThrow(UserNotExistException::new);
+        } else if (username != null) {
+            return userRepo.findByName(username).orElseThrow(UserNotExistException::new);
         }
-        // now is put but we need use patch here in case
-        // the user is already exist
+        // missing both username and id info, basically can't find the user.
+        throw new UserNotExistException();
+    }
+
+    @Override
+    public UserEntity create(UserEntity user) throws UserExistException {
+        if (userExist(user) || userRepo.existsByName(user.getName())) {
+            throw new UserExistException();
+        }
+        String salt = this.generateSalt();
+        user.setPassword(this.generateHash(user.getPassword(), salt));
         return userRepo.save(user);
     }
 
     @Override
-    public boolean authorize(UserEntity user) {
+    public void save(UserEntity user) {
+        // only check the id as this method is
+        // designed to update the user info.
         if (userExist(user)) {
-            // already check user exist above so this should never null
-            // in case something wrong happened return false.
-            UserEntity userInfo = userRepo.findById(user.getId()).orElse(null);
-            if (userInfo != null) {
-                String salt = userInfo.getSalt();
-                String validHash = userInfo.getPassword();
-                String hash = generateHash(user.getPassword(), salt);
-                if (hash.equals(validHash)) {
-                    return true;
+            userRepo.save(user);
+        }
+    }
+
+    @Override
+    public boolean authorize(UserEntity user) {
+        if (userExist(user) && userRepo.existsByName(user.getName())) {
+            try {
+                UserEntity userInfo = userRepo.findById(user.getId()).orElseThrow(UserNotExistException::new);
+                if (userInfo.getId() != null) {
+                    String salt = userInfo.getSalt();
+                    String validHash = userInfo.getPassword();
+                    String hash = generateHash(user.getPassword(), salt);
+                    return hash.equals(validHash);
                 }
+            } catch (UserNotExistException e) {
+                // continue and simply return false
             }
         }
         return false;
     }
+
 
     private boolean userExist(UserEntity user) {
         Integer userId = user.getId();
@@ -70,7 +100,7 @@ public class UserServiceImpl implements UserService {
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.getEncoder().encodeToString(hash);
         } catch (GeneralSecurityException e) {
-            // this will never happen
+            // this should never happen
             throw new RuntimeException(e);
         }
     }
