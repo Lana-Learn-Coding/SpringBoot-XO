@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ok</title>
+    <title>Login</title>
 </head>
 <body>
-<h1>ok</h1>
-</body>
+<form th:object="${user}" method="post">
+    <label>username: <input type="text" th:field="*{name}"></label> <i style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></i><br>
+    <label>password: <input type="password" th:field="*{password}"></label> <i style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></i><br>
+    <button type="submit">submit</button>
+</form></body>
 </html>
