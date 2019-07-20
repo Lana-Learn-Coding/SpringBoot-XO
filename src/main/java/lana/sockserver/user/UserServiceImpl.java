@@ -62,17 +62,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authorize(UserEntity user) {
-        if (userExist(user) && userRepo.existsByName(user.getName())) {
+        String username = user.getName();
+        if (username != null) {
             try {
-                UserEntity userInfo = userRepo.findById(user.getId()).orElseThrow(UserNotExistException::new);
-                if (userInfo.getId() != null) {
-                    String salt = userInfo.getSalt();
-                    String validHash = userInfo.getPassword();
-                    String hash = generateHash(user.getPassword(), salt);
-                    return hash.equals(validHash);
-                }
+                // the get() method only find user that match name or id
+                // cause the username already exist so this method also complete the username check step
+                UserEntity userInfo = this.get(user);
+                String salt = userInfo.getSalt();
+                String validHash = userInfo.getPassword();
+                String hash = generateHash(user.getPassword(), salt);
+                return hash.equals(validHash);
             } catch (UserNotExistException e) {
-                // continue and simply return false
+                // continue and simply return false as username not found.
             }
         }
         return false;
