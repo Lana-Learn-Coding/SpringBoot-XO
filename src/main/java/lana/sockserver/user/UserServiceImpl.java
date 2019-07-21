@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
         if (userExist(user) || userRepo.existsByName(user.getName())) {
             throw new UserExistException();
         }
-        String salt = this.generateSalt();
-        user.setPassword(this.generateHash(user.getPassword(), salt));
+        user.setSalt(this.generateSalt());
+        user.setPassword(this.generateHash(user.getPassword(), user.getSalt()));
         return userRepo.save(user);
     }
 
