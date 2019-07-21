@@ -28,34 +28,35 @@ public class UserController {
     @GetMapping("/login")
     public String getLogin(Model model) {
         model.addAttribute("user", new UserForm());
-        return "login";
+        return "user/login";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("user") UserForm user) {
+    public String login(@ModelAttribute("user") UserForm user, Model model) {
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         if (userService.authorize(userEntity)) {
             return "ok";
         }
-        return "login";
+        model.addAttribute("error", "Wrong username or password");
+        return "user/login";
     }
 
     @GetMapping("/sign-up")
     public String getSignUp(Model model) {
         model.addAttribute("user", new UserForm());
-        return "signUp";
+        return "user/signUp";
     }
 
     @PostMapping("/sign-up")
     public String signUp(@Valid @ModelAttribute("user") UserForm user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signUp";
+            return "user/signUp";
         }
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         try {
             userService.create(userEntity);
         } catch (Exception e) {
-            return "signUp";
+            return "user/signUp";
         }
         return "redirect:/login";
     }
