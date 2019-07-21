@@ -1,6 +1,7 @@
 package lana.sockserver;
 
 import lana.sockserver.util.hashing.HashingUtil;
+import lana.sockserver.util.hashing.HashingUtilImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,6 @@ public class UtilitiesConfig {
 
     @Bean
     public HashingUtil hashingUtil() {
-        return null;
+        return new HashingUtilImpl();
     }
 }
