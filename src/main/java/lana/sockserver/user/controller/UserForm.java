@@ -1,4 +1,4 @@
-package lana.sockserver.user.model;
+package lana.sockserver.user.controller;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

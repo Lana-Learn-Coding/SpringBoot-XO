@@ -1,8 +1,8 @@
-package lana.sockserver.user;
+package lana.sockserver.user.controller;
 
 
-import lana.sockserver.user.model.User;
-import lana.sockserver.user.model.UserForm;
+import lana.sockserver.user.UserService;
+import lana.sockserver.user.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

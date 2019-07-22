@@ -1,4 +1,4 @@
-package lana.sockserver.user.model;
+package lana.sockserver.user;
 
 
 import lombok.Data;

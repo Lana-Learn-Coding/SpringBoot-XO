@@ -2,7 +2,6 @@ package lana.sockserver.user;
 
 import lana.sockserver.user.exception.UserExistException;
 import lana.sockserver.user.exception.UserNotExistException;
-import lana.sockserver.user.model.User;
 import lana.sockserver.util.hashing.HashingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

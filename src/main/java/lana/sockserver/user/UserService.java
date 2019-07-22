@@ -3,7 +3,6 @@ package lana.sockserver.user;
 
 import lana.sockserver.user.exception.UserExistException;
 import lana.sockserver.user.exception.UserNotExistException;
-import lana.sockserver.user.model.User;
 
 public interface UserService {
     // get the user by name or id, in case one of those property is missing.

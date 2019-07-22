@@ -1,6 +1,5 @@
 package lana.sockserver.user;
 
-import lana.sockserver.user.model.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Optional;
