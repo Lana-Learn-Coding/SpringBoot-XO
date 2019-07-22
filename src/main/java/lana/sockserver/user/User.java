@@ -1,6 +1,5 @@
 package lana.sockserver.user;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
