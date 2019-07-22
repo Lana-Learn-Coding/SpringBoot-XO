@@ -2,7 +2,7 @@ package lana.sockserver.user;
 
 import lana.sockserver.user.exception.UserExistException;
 import lana.sockserver.user.exception.UserNotExistException;
-import lana.sockserver.user.model.UserEntity;
+import lana.sockserver.user.model.User;
 import lana.sockserver.util.hashing.HashingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,13 +19,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity get(UserEntity user) throws UserNotExistException {
+    public User get(User user) throws UserNotExistException {
         String username = user.getName();
         Integer userId = user.getId();
         // if both username and id exist then check if those match with the info in database
         // else try to get the user based on username or id.
         if (userId != null && username != null) {
-            UserEntity userEntity = userRepo.findById(userId).orElseThrow(UserNotExistException::new);
+            User userEntity = userRepo.findById(userId).orElseThrow(UserNotExistException::new);
             if (!userEntity.getName().equals(username)) throw new UserNotExistException();
             return userEntity;
         } else if (userId != null) {
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity create(UserEntity user) throws UserExistException {
+    public User create(User user) throws UserExistException {
         if (userExist(user) || userRepo.existsByName(user.getName())) {
             throw new UserExistException();
         }
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserEntity user) {
+    public void save(User user) {
         // only check the id as this method is
         // designed to update the user info.
         if (userExist(user)) {
@@ -57,13 +57,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authorize(UserEntity user) {
+    public boolean authorize(User user) {
         String username = user.getName();
         if (username != null) {
             try {
                 // the get() method only find user that match name or id
                 // cause the username already exist so this method also complete the username check step
-                UserEntity userInfo = this.get(user);
+                User userInfo = this.get(user);
                 String validHash = userInfo.getPassword();
                 String hash = hashingUtil.hash(user.getPassword(), userInfo.getSalt());
                 return hash.equals(validHash);
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private boolean userExist(UserEntity user) {
+    private boolean userExist(User user) {
         Integer userId = user.getId();
         return (userId != null) && (userRepo.existsById(userId));
     }

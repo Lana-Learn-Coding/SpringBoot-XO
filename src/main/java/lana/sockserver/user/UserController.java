@@ -1,8 +1,7 @@
 package lana.sockserver.user;
 
 
-import lana.sockserver.user.model.UserDTO;
-import lana.sockserver.user.model.UserEntity;
+import lana.sockserver.user.model.User;
 import lana.sockserver.user.model.UserForm;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute("user") UserForm user, Model model) {
-        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+        User userEntity = modelMapper.map(user, User.class);
         if (userService.authorize(userEntity)) {
             // TODO: add UserDTO and redirect to /home
             return "home";
@@ -54,7 +53,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user/signUp";
         }
-        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
+        User userEntity = modelMapper.map(user, User.class);
         try {
             userService.create(userEntity);
         } catch (Exception e) {
