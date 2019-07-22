@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/lib/bootstrap.css}">
 </head>
 <body>
+
 <form th:object="${user}" method="post">
     <label>username: <input type="text" th:field="*{name}"></label> <i style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></i><br>
     <label>password: <input type="password" th:field="*{password}"></label> <i style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></i><br>
     <button type="submit">submit</button>
-</form></body>
+</form>
+
+
+<script th:src="@{/lib/jquery.js}"></script>
+<script th:src="@{/lib/bootstrap.js}"></script>
+</body>
 </html>
