@@ -1,6 +1,7 @@
 package lana.sockserver.user;
 
 
+import lana.sockserver.user.model.UserDTO;
 import lana.sockserver.user.model.UserEntity;
 import lana.sockserver.user.model.UserForm;
 import org.modelmapper.ModelMapper;
@@ -35,7 +36,8 @@ public class UserController {
     public String login(@ModelAttribute("user") UserForm user, Model model) {
         UserEntity userEntity = modelMapper.map(user, UserEntity.class);
         if (userService.authorize(userEntity)) {
-            return "ok";
+            // TODO: add UserDTO and redirect to /home
+            return "home";
         }
         model.addAttribute("error", "Wrong username or password");
         return "user/login";
