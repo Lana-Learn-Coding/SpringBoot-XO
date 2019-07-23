@@ -2,6 +2,8 @@ package lana.sockserver.user;
 
 import lana.sockserver.user.exception.UserExistException;
 import lana.sockserver.user.exception.UserNotExistException;
+import lana.sockserver.user.role.Role;
+import lana.sockserver.user.role.RoleService;
 import lana.sockserver.util.hashing.HashingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final HashingUtil hashingUtil;
     private final UserRepo userRepo;
+    private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, HashingUtil hashingUtil) {
+    public UserServiceImpl(UserRepo userRepo, HashingUtil hashingUtil,RoleService roleService) {
         this.hashingUtil = hashingUtil;
         this.userRepo = userRepo;
+        this.roleService = roleService;
     }
 
     @Override
@@ -43,6 +47,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setSalt(hashingUtil.random());
         user.setPassword(hashingUtil.hash(user.getPassword(), user.getSalt()));
+        user.setRole(roleService.getId(Role.USER));
         return userRepo.save(user);
     }
 
