@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setSalt(hashingUtil.random());
         user.setPassword(hashingUtil.hash(user.getPassword(), user.getSalt()));
-        user.setRole(roleService.getId(Role.USER));
+        user.setRole(roleService.get(Role.USER));
         return userRepo.save(user);
     }
 

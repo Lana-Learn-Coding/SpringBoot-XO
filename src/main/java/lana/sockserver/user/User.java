@@ -1,5 +1,6 @@
 package lana.sockserver.user;
 
+import lana.sockserver.user.role.RoleEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,5 @@ public class User {
 
     @ManyToOne
     @JoinColumn
-    private Integer role;
+    private RoleEntity role;
 }
