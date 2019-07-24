@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -24,6 +25,5 @@ public class User {
     private String salt;
 
     @ManyToOne
-    @JoinColumn
-    private RoleEntity role;
+    private Set<RoleEntity> roles;
 }

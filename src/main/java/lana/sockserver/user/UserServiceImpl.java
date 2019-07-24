@@ -3,10 +3,14 @@ package lana.sockserver.user;
 import lana.sockserver.user.exception.UserExistException;
 import lana.sockserver.user.exception.UserNotExistException;
 import lana.sockserver.user.role.Role;
+import lana.sockserver.user.role.RoleEntity;
 import lana.sockserver.user.role.RoleService;
 import lana.sockserver.util.hashing.HashingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
@@ -15,7 +19,7 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, HashingUtil hashingUtil,RoleService roleService) {
+    public UserServiceImpl(UserRepo userRepo, HashingUtil hashingUtil, RoleService roleService) {
         this.hashingUtil = hashingUtil;
         this.userRepo = userRepo;
         this.roleService = roleService;
@@ -42,12 +46,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) throws UserExistException {
-        if (userExist(user) || userRepo.existsByName(user.getName())) {
-            throw new UserExistException();
-        }
+        if (userExist(user) || userRepo.existsByName(user.getName())) throw new UserExistException();
+
         user.setSalt(hashingUtil.random());
         user.setPassword(hashingUtil.hash(user.getPassword(), user.getSalt()));
-        user.setRole(roleService.get(Role.USER));
+
+        Set<RoleEntity> roles = new HashSet<>();
+        roles.add(roleService.get(Role.USER));
+        user.setRoles(roles);
+
         return userRepo.save(user);
     }
 
