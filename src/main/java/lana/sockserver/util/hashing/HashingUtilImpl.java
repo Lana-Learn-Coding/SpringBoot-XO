@@ -3,6 +3,7 @@ package lana.sockserver.util.hashing;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 public class HashingUtilImpl implements HashingUtil {
@@ -31,7 +32,10 @@ public class HashingUtilImpl implements HashingUtil {
 
     @Override
     public String random() {
-        return null;
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] random = new byte[16];
+        secureRandom.nextBytes(random);
+        return Base64.getEncoder().encodeToString(random);
     }
 
 }
