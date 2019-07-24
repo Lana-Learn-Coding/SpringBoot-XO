@@ -24,6 +24,6 @@ public class User {
 
     private String salt;
 
-    @ManyToOne
+    @ManyToMany
     private Set<RoleEntity> roles;
 }
