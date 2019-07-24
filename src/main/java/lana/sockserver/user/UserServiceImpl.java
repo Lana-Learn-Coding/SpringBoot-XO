@@ -1,7 +1,5 @@
 package lana.sockserver.user;
 
-import lana.sockserver.user.exception.UserExistException;
-import lana.sockserver.user.exception.UserNotExistException;
 import lana.sockserver.user.role.Role;
 import lana.sockserver.user.role.RoleEntity;
 import lana.sockserver.user.role.RoleService;

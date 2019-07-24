@@ -1,4 +1,4 @@
-package lana.sockserver.user.exception;
+package lana.sockserver.user;
 
 import lombok.NoArgsConstructor;
 
