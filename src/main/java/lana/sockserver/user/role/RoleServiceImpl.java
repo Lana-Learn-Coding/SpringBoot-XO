@@ -14,14 +14,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Integer getId(Role role) {
-        switch (role) {
-            case ADMIN:
-                return 1;
-            case USER:
-                return 2;
-            default:
-                return 3;
-        }
+        return get(role).getId();
     }
 
     @Override
@@ -32,6 +25,6 @@ public class RoleServiceImpl implements RoleService {
         guestDefault.setId(3);
         guestDefault.setRoleName("GUEST");
 
-        return roleRepo.findById(getId(role)).orElse(guestDefault);
+        return roleRepo.findByRoleName(role.name()).orElse(guestDefault);
     }
 }
