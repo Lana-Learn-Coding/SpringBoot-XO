@@ -8,6 +8,4 @@ public interface UserService {
     User create(User user) throws UserExistException;
 
     void save(User user);
-
-    boolean authorize(User user);
 }

@@ -61,23 +61,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public boolean authorize(User user) {
-        String username = user.getName();
-        if (username != null) {
-            try {
-                // the get() method only find user that match name or id
-                // cause the username already exist so this method also complete the username check step
-                User userInfo = this.get(user);
-                return passwordEncoder.matches(user.getPassword(), userInfo.getPassword());
-            } catch (UserNotExistException e) {
-                // continue and simply return false as username not found.
-            }
-        }
-        return false;
-    }
-
-
     private boolean userExist(User user) {
         Integer userId = user.getId();
         return (userId != null) && (userRepo.existsById(userId));

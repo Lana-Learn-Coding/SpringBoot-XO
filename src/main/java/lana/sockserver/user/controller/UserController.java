@@ -37,13 +37,9 @@ public class UserController {
         return "user/login";
     }
 
+    // TODO: remove this
     @PostMapping("/login")
     public String login(@ModelAttribute("user") UserForm user, Model model) {
-        User userEntity = modelMapper.map(user, User.class);
-        if (userService.authorize(userEntity)) {
-            // TODO: add UserDTO and redirect to /home
-            return "home";
-        }
         model.addAttribute("error", "Wrong username or password");
         return "user/login";
     }
