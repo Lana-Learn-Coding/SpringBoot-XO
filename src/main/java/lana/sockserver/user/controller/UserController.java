@@ -1,8 +1,8 @@
 package lana.sockserver.user.controller;
 
 
-import lana.sockserver.user.UserService;
 import lana.sockserver.user.User;
+import lana.sockserver.user.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,12 @@ import javax.validation.Valid;
 public class UserController {
     private final UserService userService;
     private final ModelMapper modelMapper;
+
+    // TODO: remove this.
+    @PostMapping("/home")
+    public String home() {
+        return "home";
+    }
 
     @Autowired
     public UserController(UserService userService, ModelMapper modelMapper) {
