@@ -1,15 +1,17 @@
 package lana.sockserver.user;
 
 import lana.sockserver.user.role.RoleEntity;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "user")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
     @Id
