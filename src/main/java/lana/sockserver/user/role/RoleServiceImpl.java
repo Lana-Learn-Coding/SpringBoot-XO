@@ -13,11 +13,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Integer getId(Role role) {
-        return get(role).getId();
-    }
-
-    @Override
     public RoleEntity get(Role role) {
         // Default Entity for Guest. Based on database
         // This value can be change if the db role table changed
