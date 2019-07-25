@@ -24,8 +24,6 @@ public class User {
 
     private String password;
 
-    private String salt;
-
     @ManyToMany
     private Set<RoleEntity> roles;
 }

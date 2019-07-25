@@ -3,8 +3,8 @@ package lana.sockserver.user;
 import lana.sockserver.user.role.Role;
 import lana.sockserver.user.role.RoleEntity;
 import lana.sockserver.user.role.RoleService;
-import lana.sockserver.util.hashing.HashingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -12,13 +12,13 @@ import java.util.Set;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
-    private final HashingUtil hashingUtil;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepo userRepo;
     private final RoleService roleService;
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, HashingUtil hashingUtil, RoleService roleService) {
-        this.hashingUtil = hashingUtil;
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder, RoleService roleService) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepo = userRepo;
         this.roleService = roleService;
     }
@@ -45,14 +45,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) throws UserExistException {
         if (userExist(user) || userRepo.existsByName(user.getName())) throw new UserExistException();
-
-        user.setSalt(hashingUtil.random());
-        user.setPassword(hashingUtil.hash(user.getPassword(), user.getSalt()));
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<RoleEntity> roles = new HashSet<>();
         roles.add(roleService.get(Role.USER));
         user.setRoles(roles);
-
         return userRepo.save(user);
     }
 
@@ -73,9 +69,7 @@ public class UserServiceImpl implements UserService {
                 // the get() method only find user that match name or id
                 // cause the username already exist so this method also complete the username check step
                 User userInfo = this.get(user);
-                String validHash = userInfo.getPassword();
-                String hash = hashingUtil.hash(user.getPassword(), userInfo.getSalt());
-                return hash.equals(validHash);
+                return passwordEncoder.matches(user.getPassword(), userInfo.getPassword());
             } catch (UserNotExistException e) {
                 // continue and simply return false as username not found.
             }
