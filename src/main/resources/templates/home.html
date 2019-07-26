@@ -7,8 +7,9 @@
 </head>
 <body>
 
-<h1>Hello my friend</h1>
-
+<div class="align-content-center">
+    <p th:text="${userDTO!=null?('Hi '+userDTO.getName()):'Hi, Who are you?'}"></p>
+</div>
 
 <script th:src="@{/lib/jquery.js}"></script>
 <script th:src="@{/lib/bootstrap.js}"></script>
