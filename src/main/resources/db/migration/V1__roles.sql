@@ -5,6 +5,6 @@ CREATE TABLE role
     role_name NVARCHAR(64) NOT NULL
 );
 INSERT INTO role(role_name)
-VALUES ('ROLE_ADMIN'),
-       ('ROLE_USER'),
-       ('ROLE_GUEST')
+VALUES ('ADMIN'),
+       ('USER'),
+       ('GUEST')
