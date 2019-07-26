@@ -18,7 +18,6 @@ public class RoleServiceImpl implements RoleService {
         // This value can be change if the db role table changed
         RoleEntity guestDefault = new RoleEntity();
         guestDefault.setId(3);
-        guestDefault.setRoleName("GUEST");
 
         return roleRepo.findByRoleName(role.name()).orElse(guestDefault);
     }
