@@ -1,10 +1,14 @@
-package lana.sockserver.user.controller;
+package lana.sockserver.main;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
     private int id;
     private String name;
