@@ -1,7 +1,8 @@
 package lana.sockserver;
 
 
-import org.modelmapper.ModelMapper;
+import lana.sockserver.util.objectmapper.ObjectMapper;
+import lana.sockserver.util.objectmapper.ObjectMapperImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UtilitiesConfig {
     @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
+    public ObjectMapper objectMapper() {
+        return ObjectMapperImpl.getInstance();
     }
 }

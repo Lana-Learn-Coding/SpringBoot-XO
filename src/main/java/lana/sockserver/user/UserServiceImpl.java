@@ -30,16 +30,26 @@ public class UserServiceImpl implements UserService {
         // if both username and id exist then check if those match with the info in database
         // else try to get the user based on username or id.
         if (userId != null && username != null) {
-            User userEntity = userRepo.findById(userId).orElseThrow(UserNotExistException::new);
+            User userEntity = get(userId);
             if (!userEntity.getName().equals(username)) throw new UserNotExistException();
             return userEntity;
         } else if (userId != null) {
-            return userRepo.findById(userId).orElseThrow(UserNotExistException::new);
+            return get(userId);
         } else if (username != null) {
-            return userRepo.findByName(username).orElseThrow(UserNotExistException::new);
+            return get(username);
         }
         // missing both username and id info, basically can't find the user.
         throw new UserNotExistException();
+    }
+
+    @Override
+    public User get(String username) throws UserNotExistException {
+        return userRepo.findByName(username).orElseThrow(UserNotExistException::new);
+    }
+
+    @Override
+    public User get(Integer id) throws UserNotExistException {
+        return userRepo.findById(id).orElseThrow(UserNotExistException::new);
     }
 
     @Override

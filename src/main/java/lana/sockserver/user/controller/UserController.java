@@ -3,7 +3,7 @@ package lana.sockserver.user.controller;
 
 import lana.sockserver.user.User;
 import lana.sockserver.user.UserService;
-import org.modelmapper.ModelMapper;
+import lana.sockserver.util.objectmapper.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,18 +17,12 @@ import javax.validation.Valid;
 @Controller
 public class UserController {
     private final UserService userService;
-    private final ModelMapper modelMapper;
-
-    // TODO: remove this.
-    @PostMapping("/home")
-    public String home() {
-        return "home";
-    }
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, ObjectMapper objectMapper) {
         this.userService = userService;
-        this.modelMapper = modelMapper;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/login")
@@ -55,7 +49,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user/signUp";
         }
-        User userEntity = modelMapper.map(user, User.class);
+        User userEntity = objectMapper.map(user, User.class);
         try {
             userService.create(userEntity);
         } catch (Exception e) {
