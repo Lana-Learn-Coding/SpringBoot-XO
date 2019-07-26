@@ -25,7 +25,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/home", method = {RequestMethod.GET, RequestMethod.POST})
-    public String home(Principal principal, Authentication auth, Model model) {
+    public String home(Principal principal, Authentication authentication, Model model) {
         return "home";
     }
 }
