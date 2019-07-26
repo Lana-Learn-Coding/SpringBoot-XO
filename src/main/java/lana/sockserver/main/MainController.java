@@ -28,6 +28,4 @@ public class MainController {
     public String home(Principal principal, Authentication auth, Model model) {
         return "home";
     }
-
-
 }
