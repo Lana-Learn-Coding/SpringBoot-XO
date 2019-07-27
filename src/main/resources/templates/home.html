@@ -7,8 +7,9 @@
 </head>
 <body>
 
-<div class="align-content-center">
-    <p th:text="${username!=null?('Hi '+username):'Hi, Who are you?'}"></p>
+<div class="justify-content-center">
+    <p th:text="${user?.name ?: 'Who are u'}"></p>
+    <p th:text="${user?.id ?: 'I dont know u'}"></p>
 </div>
 
 <script th:src="@{/lib/jquery.js}"></script>
