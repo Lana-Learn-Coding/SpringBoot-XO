@@ -1,5 +1,7 @@
-package lana.sockserver.user;
+package lana.sockserver.user.service;
 
+import lana.sockserver.user.User;
+import lana.sockserver.user.UserRepo;
 import lana.sockserver.user.role.RoleEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

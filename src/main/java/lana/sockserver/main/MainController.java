@@ -1,7 +1,7 @@
 package lana.sockserver.main;
 
 
-import lana.sockserver.user.UserService;
+import lana.sockserver.user.service.UserService;
 import lana.sockserver.util.objectmapper.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;

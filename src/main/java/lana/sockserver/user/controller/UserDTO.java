@@ -1,4 +1,4 @@
-package lana.sockserver.main;
+package lana.sockserver.user.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

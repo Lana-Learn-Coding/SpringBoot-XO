@@ -1,5 +1,7 @@
-package lana.sockserver.user;
+package lana.sockserver.user.service;
 
+
+import lana.sockserver.user.User;
 
 public interface UserService {
     // get the user by name or id, in case one of those property is missing.
