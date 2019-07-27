@@ -1,4 +1,4 @@
-package lana.sockserver.user.service;
+package lana.sockserver.security;
 
 import lana.sockserver.user.User;
 import lana.sockserver.user.UserRepo;
