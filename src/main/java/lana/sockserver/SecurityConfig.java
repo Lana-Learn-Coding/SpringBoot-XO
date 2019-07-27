@@ -2,7 +2,6 @@ package lana.sockserver;
 
 import lana.sockserver.security.AuthenticationFacade;
 import lana.sockserver.security.AuthenticationFacadeImpl;
-import lana.sockserver.user.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,16 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login", "/sign-up").permitAll()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/home").hasAuthority(Role.USER.name())
+                .antMatchers("/login", "/sign-up", "/home").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter("name")
                 .passwordParameter("password")
                 .failureForwardUrl("/login?error=true")
-                .successForwardUrl("/home");
+                .defaultSuccessUrl("/home");
     }
 }
