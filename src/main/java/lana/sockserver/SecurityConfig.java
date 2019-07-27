@@ -1,5 +1,7 @@
 package lana.sockserver;
 
+import lana.sockserver.security.AuthenticationFacade;
+import lana.sockserver.security.AuthenticationFacadeImpl;
 import lana.sockserver.user.role.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationFacade authenticationFacade() {
+        return AuthenticationFacadeImpl.getInstance();
     }
 
     private final UserDetailsService userDetailsService;
